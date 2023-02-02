@@ -1,63 +1,77 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 
 import Section from './Section/Section';
 import Notification from './Notification/Notification';
 import Statistics from './Statistics/Statistics';
 import FeedbackOptions from './FeedbackOptions/FeedbackOptions';
 
-class App extends React.Component {
 
-  state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
-  }
+const App = () => {
+  const [good, setGood] = useState(null);
+  const [neutral, setNeutral] = useState(null);
+  const [bad, setBad] = useState(null);
 
-handleIncrement = option => {
-    this.setState(prevState => ({
-      [option]: prevState[option] + 1,
-    }));
+  const options = ['good', 'neutral', 'bad'];
+
+  const totalFeedback = countTotalFeedback();
+  const positivePercentage = countPositiveFeedbackPercentage();
+
+  function handleIncrement(option) {
+    // console.log('click')
+
+    switch (option) {
+      case 'good':
+        setGood(prevState => prevState + 1);
+        // console.log(good)
+        break;
+      
+      case 'neutral':
+        setNeutral(prevState => prevState + 1);
+        break;
+      
+      case 'bad':
+        setBad(prevState => prevState + 1);
+        break;
+      
+      default:
+        return;
+    };
   };
 
-  countTotalFeedback() {
-    const { good, neutral, bad } = this.state;
-    return good + neutral + bad;
+  function countTotalFeedback() {
+    const totalFeedback = good + neutral + bad;
+    console.log(totalFeedback);
+    return totalFeedback;
   }  
   
-countPositiveFeedbackPercentage = () => {
-  return Math.round((this.state.good / this.countTotalFeedback()) * 100)
+  function countPositiveFeedbackPercentage() {
+    return Math.round((good / totalFeedback) * 100)
    
 };
-
-  render() {
-    const options = Object.keys(this.state);
     
-
     return (
       <div>
         <Section title="Please leave feedback">
         <FeedbackOptions
           options={options}
-          onLeaveFeedback={this.handleIncrement}
+          onLeaveFeedback={handleIncrement}
         />
         </Section>
         <Section title="Statistics">
-          {this.countTotalFeedback() > 0 ? (
+          {totalFeedback > 0 ? (
         <Statistics
-          good={this.state.good}
-          neutral={this.state.neutral}
-          bad={this.state.bad}
-          total={this.countTotalFeedback()}
-          positiveFeedback={this.countPositiveFeedbackPercentage()}
+          good={good}
+          neutral={neutral}
+          bad={bad}
+          total={totalFeedback}
+          positiveFeedback={positivePercentage}
           />
             ) : (
             <Notification message="There is no feedback" />
           )}
         </Section>
       </div>)
-  }
 };
-
-
 
 export default App;
