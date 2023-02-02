@@ -1,0 +1,17 @@
+.btns {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.btn {
+  width: 80px;
+  border: 0px;
+  border-radius: 5px;
+  cursor: pointer;
+
+  background-color: #f5ed58;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  line-height: 1.7;
+}
